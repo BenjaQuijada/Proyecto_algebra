@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Informe Proyecto Computacional — IMT2230</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 2.0cm 2.2cm;
+    }
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 10.5pt;
+      line-height: 1.48;
+      color: #1a1a1a;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 2px solid #0b3b60;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+    .course {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0b3b60;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: 16.5pt;
+      margin: 6px 0 6px 0;
+      color: #0b253c;
+      line-height: 1.25;
+    }
+    .meta {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 9.2pt;
+      color: #444;
+    }
+    h2 {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 12pt;
+      color: #0b3b60;
+      border-bottom: 1px solid #d5e0ea;
+      padding-bottom: 3px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 10.5pt;
+      color: #1c4e75;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      page-break-after: avoid;
+    }
+    p {
+      text-align: justify;
+      margin: 0 0 8px 0;
+    }
+    ul, ol {
+      margin: 4px 0 10px 0;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 4px;
+      text-align: justify;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 12px 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cfd8e3;
+      padding: 5px 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #eef4f9;
+      color: #0b3b60;
+      font-weight: 600;
+    }
+    td.num, th.num {
+      text-align: right;
+    }
+    blockquote {
+      background: #f5f8fb;
+      border-left: 3.5px solid #0b3b60;
+      margin: 8px 0 12px 0;
+      padding: 8px 12px;
+      font-style: italic;
+      font-size: 10pt;
+      page-break-inside: avoid;
+    }
+    .figure {
+      text-align: center;
+      margin: 12px 0 14px 0;
+      page-break-inside: avoid;
+    }
+    .figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #e2e8f0;
+    }
+    .caption {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 8.6pt;
+      color: #4a5568;
+      margin-top: 4px;
+    }
+    code {
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 9.2pt;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .math-block {
+      text-align: center;
+      margin: 8px 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="course">Pontificia Universidad Católica de Chile · Álgebra Lineal Avanzada y Modelamiento (IMT2230)</div>
+  <h1>Análisis Semántico Latente (LSA) mediante SVD sobre Reseñas de Videojuegos en Steam</h1>
+  <div class="meta">
+    <strong>Autor:</strong> Benjamín Quijada &nbsp;|&nbsp;
+    <strong>Fecha:</strong> Noviembre 2026 &nbsp;|&nbsp;
+    <strong>Repositorio GitHub:</strong> <code>[INSERTAR_LINK_REPOSITORIO_GITHUB]</code>
+  </div>
+</header>
+
+<h2>1. Elección y descripción del corpus</h2>
+<p>
+  Se construyó un corpus de <strong>n = 240 reseñas públicas</strong> de usuarios de Steam en inglés, extraídas mediante <em>streaming</em> desde el repositorio abierto <code>mulhod/steam_reviews</code> en GitHub (<code>https://github.com/mulhod/steam_reviews</code>). Para garantizar que cada documento aporte suficiente contenido léxico, se filtraron reseñas de entre 300 y 3000 caracteres con al menos 200 letras alfabéticas, seleccionando <strong>60 reseñas por título</strong> en cuatro videojuegos de géneros muy contrastantes. Todo el proceso es reproducible ejecutando <code>download_data.py</code> o cargando directamente la instantánea <code>data/steam_reviews.csv</code>.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Videojuego</th>
+      <th>Género</th>
+      <th class="num">Documentos</th>
+      <th class="num">Caracteres prom.</th>
+      <th class="num">Palabras prom.</th>
+      <th class="num">Horas jugadas (mediana)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>The Elder Scrolls V: Skyrim</em></td>
+      <td>RPG / Fantasy</td>
+      <td class="num">60</td>
+      <td class="num">986.2</td>
+      <td class="num">180.2</td>
+      <td class="num">174.0</td>
+    </tr>
+    <tr>
+      <td><em>Sid Meier's Civilization V</em></td>
+      <td>Strategy 4X</td>
+      <td class="num">60</td>
+      <td class="num">1014.3</td>
+      <td class="num">183.2</td>
+      <td class="num">201.4</td>
+    </tr>
+    <tr>
+      <td><em>Counter-Strike: Global Offensive</em></td>
+      <td>Tactical FPS</td>
+      <td class="num">60</td>
+      <td class="num">1044.2</td>
+      <td class="num">190.8</td>
+      <td class="num">618.2</td>
+    </tr>
+    <tr>
+      <td><em>Football Manager 2015</em></td>
+      <td>Sports Sim</td>
+      <td class="num">60</td>
+      <td class="num">1109.4</td>
+      <td class="num">206.9</td>
+      <td class="num">248.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2. Hipótesis inicial</h2>
+<blockquote>
+  Dado que los cuatro títulos pertenecen a géneros claramente diferenciados, esperamos que la matriz término-documento presente una estructura latente dominada por cuatro grupos temáticos asociados a cada juego: vocabulario de exploración y modificaciones en Skyrim (<em>mods, dragon, quests</em>), gestión de imperios y turnos en Civilization V (<em>turn, city, war, victory</em>), disparo competitivo en CS:GO (<em>team, hacker, kill, matchmaking</em>) y dirección técnica de fútbol en Football Manager 2015 (<em>players, football, match, tactics</em>). Asimismo, anticipamos que la primera componente singular capturará un eje transversal común a las reseñas (<em>game, play, hours, fun</em>), mientras que las componentes siguientes separarán los géneros, con posible solapamiento en reseñas enfocadas en rendimiento o políticas de Steam.
+</blockquote>
+
+<h2>3. Preprocesamiento y construcción de la matriz textual</h2>
+<p>
+  Para construir el vocabulario se aplicó normalización a minúsculas, tokenización alfabética de palabras de al menos 3 letras (<code>\b[a-zA-Z]{3,}\b</code>), eliminación de <em>stopwords</em> estándar en inglés y filtrado por frecuencia documental (<code>min_df=3</code>, <code>max_df=0.80</code>) para descartar erratas aisladas y términos demasiado ubicuos. En lugar de conteos crudos, se empleó ponderación <strong>TF-IDF con frecuencia sublineal</strong> (<code>1 + log(tf)</code>), evitando que reseñas muy extensas o repeticiones dominen la norma de las columnas.
+</p>
+<p>
+  El vocabulario final quedó conformado por <strong>m = 1371 términos</strong>. Transponiendo la matriz entregada por <code>TfidfVectorizer</code> de <code>scikit-learn</code>, se construyó la matriz término-documento <strong>A &isin; &#8477;<sup>1371 &times; 240</sup></strong> (filas = términos, columnas = documentos), con una densidad de entradas no nulas del <strong>3.40%</strong> (esparsidad 96.60%) y norma de Frobenius <strong>||A||<sub>F</sub> = 15.4919</strong>.
+</p>
+
+<h2>4. Cálculo de la SVD y análisis de valores singulares</h2>
+<p>
+  Se calculó la descomposición SVD reducida <strong>A = U &Sigma; V<sup>T</sup></strong> mediante <code>np.linalg.svd(A, full_matrices=False)</code>, obteniendo <strong>U &isin; &#8477;<sup>1371 &times; 240</sup></strong>, <strong>&Sigma; = diag(&sigma;<sub>1</sub>, &hellip;, &sigma;<sub>240</sub>)</strong> y <strong>V<sup>T</sup> &isin; &#8477;<sup>240 &times; 240</sup></strong>, con error de reconstrucción <strong>||A &minus; U&Sigma;V<sup>T</sup>||<sub>F</sub> = 5.25 &times; 10<sup>&minus;14</sup></strong>.
+</p>
+
+<div class="figure">
+  <img src="../figures/singular_values.png" alt="Valores singulares y energía acumulada" />
+  <div class="caption">Figura 1: Decaimiento de los primeros 40 valores singulares (izquierda) y energía espectral acumulada (derecha).</div>
+</div>
+
+<p>
+  Los primeros valores singulares son <strong>&sigma;<sub>1</sub> = 3.692</strong>, <strong>&sigma;<sub>2</sub> = 2.241</strong>, <strong>&sigma;<sub>3</sub> = 2.066</strong> y <strong>&sigma;<sub>4</sub> = 1.973</strong>, observándose un salto espectral claro hacia <strong>&sigma;<sub>5</sub> = 1.677</strong> seguido de una cola de decaimiento gradual. Este codo en <strong>k = 4</strong> refleja directamente la presencia de los cuatro géneros del corpus (reteniendo el <strong>11.17%</strong> de la energía espectral). Para tareas de exploración semántica y similitud coseno se eligió <strong>k = 20</strong> (<strong>24.98%</strong> de la energía), un compromiso adecuado para capturar matices subtemáticos sin arrastrar el ruido de alta frecuencia de la cola.
+</p>
+
+<h2>5. Representación 2D de documentos y términos</h2>
+<p>
+  Siguiendo la geometría de la SVD, la proyección ortogonal de cada documento (columna de <em>A</em>) sobre <code>Span(u<sub>a</sub>, u<sub>b</sub>)</code> tiene coordenadas <strong>(u<sub>a</sub><sup>T</sup> A<sub>:,d</sub>, u<sub>b</sub><sup>T</sup> A<sub>:,d</sub>) = (&sigma;<sub>a</sub> V<sub>d,a</sub>, &sigma;<sub>b</sub> V<sub>d,b</sub>)</strong>, mientras que la proyección de cada término (fila de <em>A</em>) sobre <code>Span(v<sub>a</sub>, v<sub>b</sub>)</code> tiene coordenadas <strong>(A<sub>t,:</sub> v<sub>a</sub>, A<sub>t,:</sub> v<sub>b</sub>) = (&sigma;<sub>a</sub> U<sub>t,a</sub>, &sigma;<sub>b</sub> U<sub>t,b</sub>)</strong>.
+</p>
+
+<div class="figure">
+  <img src="../figures/docs_2d.png" alt="Proyección 2D de documentos" />
+  <div class="caption">Figura 2: Proyección 2D de los 240 documentos en Span(u<sub>1</sub>, u<sub>2</sub>) (izquierda) y Span(u<sub>2</sub>, u<sub>3</sub>) (derecha).</div>
+</div>
+
+<div class="figure">
+  <img src="../figures/terms_2d.png" alt="Proyección 2D de términos" style="max-width: 82%;" />
+  <div class="caption">Figura 3: Proyección 2D de términos en Span(v<sub>2</sub>, v<sub>3</sub>), destacando los 28 términos con mayor norma en el plano.</div>
+</div>
+
+<p>
+  Como se aprecia en la Figura 2, en <code>Span(u<sub>1</sub>, u<sub>2</sub>)</code> todos los documentos tienen coordenada negativa en <em>u<sub>1</sub></em> porque la primera componente (asociada a una matriz no negativa) captura el eje promedio del lenguaje de reseñas. Al pasar a <strong><code>Span(u<sub>2</sub>, u<sub>3</sub>)</code></strong> y <strong><code>Span(v<sub>2</sub>, v<sub>3</sub>)</code></strong> (Figura 3), los géneros se separan con nitidez: <em>Football Manager 2015</em> asciende hacia <em>u<sub>3</sub> &gt; 0</em> (<em>players, goals, engine, football, manager, match</em>), <em>CS:GO</em> se ubica a la izquierda en <em>u<sub>2</sub> &lt; 0</em> (<em>noob, hacker, team, kill, rage</em>) y <em>Skyrim</em> se concentra a la derecha en <em>u<sub>2</sub> &gt; 0</em> (<em>mods, skyrim, valve, paid, bethesda</em>).
+</p>
+
+<h2>6. Exploración semántica en dimensión reducida</h2>
+<ul>
+  <li><strong>Significado temático de las componentes:</strong> La componente 2 (&sigma;<sub>2</sub> = 2.241) contrapone la discusión de <em>mods pagados</em> en Skyrim (<code>mods, skyrim, valve, paid, mod</code>) frente a la jerga competitiva de CS:GO (<code>noob, hacker, team, kill, idiot</code>). La componente 3 (&sigma;<sub>3</sub> = 2.066) aísla el léxico futbolístico de Football Manager (<code>players, goals, engine, football, manager, injuries</code>). La componente 4 (&sigma;<sub>4</sub> = 1.973) separa por completo a Civilization V (<code>civilization, turn, city, ghandi, war, gandhi, victory</code>).</li>
+  <li><strong>Términos cercanos (similitud coseno en k = 20):</strong> Al consultar <code>dragon</code> sus vecinos más próximos son <code>whiterun (0.90), arrow (0.88), knee (0.88), guard (0.87)</code>, capturando automáticamente el célebre meme de los guardias de Skyrim. Para <code>gandhi</code> aparecen <code>khan (0.87), nuclear (0.83), empire (0.81)</code>, reflejando el icónico meme de <em>Nuclear Gandhi</em> en Civilization V; y para <code>tactics</code> emergen <code>patched (0.91), players (0.86), goalkeeper (0.86), injuries (0.85)</code>.</li>
+  <li><strong>Documentos cercanos:</strong> El par más similar dentro de un mismo juego (<code>csgo_01</code> y <code>csgo_36</code>, similitud <code>1.000</code>) corresponde a un <em>copypasta</em> humorístico repetido por distintos usuarios en CS:GO. Entre juegos distintos, el par más cercano (<code>civilization_v_55</code> y <code>csgo_21</code>, similitud <code>0.872</code>) comparte un tono narrativo casual centrado en anécdotas con amigos (<em>fun, people, friend, game</em>) con bajo uso de vocabulario técnico.</li>
+</ul>
+
+<h2>7. Discusión, limitaciones y conclusiones</h2>
+<p>
+  <strong>Contrastación con la hipótesis:</strong> La hipótesis inicial se confirma: la SVD descubre la estructura de los cuatro géneros sin supervisión, exhibe un salto espectral en <em>k = 4</em> y separa claramente documentos y términos en las componentes 2, 3 y 4. Como resultado inesperado, la señal dominante de Skyrim no correspondió a dragones o fantasía, sino a la <strong>polémica de los <em>paid mods</em></strong> de Valve y Bethesda vigente en la fecha del corpus, mostrando cómo LSA detecta eventos coyunturales reales en los datos.
+</p>
+<p>
+  <strong>Límites del método y del corpus:</strong> El enfoque de bolsa de palabras con TF-IDF ignora el orden sintáctico, las negaciones y el sarcasmo, muy frecuente en reseñas de Steam; además, la linealidad de la SVD no resuelve por sí sola la polisemia cuando un término (como <em>engine</em>) aparece en contextos distintos. Por otra parte, el corpus se restringe a 240 reseñas en inglés de una ventana temporal específica y es sensible a textos repetitivos (<em>copypastas</em>). Como herramienta exploratoria, LSA resulta sumamente efectiva para descubrir patrones latentes y guiar la lectura cualitativa del corpus.
+</p>
+
+</body>
+</html>
