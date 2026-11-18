@@ -50,19 +50,11 @@
       margin-bottom: 8px;
       page-break-after: avoid;
     }
-    h3 {
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 10.5pt;
-      color: #1c4e75;
-      margin-top: 12px;
-      margin-bottom: 5px;
-      page-break-after: avoid;
-    }
     p {
       text-align: justify;
       margin: 0 0 8px 0;
     }
-    ul, ol {
+    ul {
       margin: 4px 0 10px 0;
       padding-left: 20px;
     }
@@ -123,11 +115,6 @@
       padding: 1px 4px;
       border-radius: 3px;
     }
-    .math-block {
-      text-align: center;
-      margin: 8px 0;
-      font-style: italic;
-    }
   </style>
 </head>
 <body>
@@ -138,13 +125,13 @@
   <div class="meta">
     <strong>Autor:</strong> Benjamín Quijada &nbsp;|&nbsp;
     <strong>Fecha:</strong> Noviembre 2026 &nbsp;|&nbsp;
-    <strong>Repositorio GitHub:</strong> <code>[INSERTAR_LINK_REPOSITORIO_GITHUB]</code>
+    <strong>Repositorio GitHub:</strong> <a href="https://github.com/BenjaQuijada/Proyecto_algebra">https://github.com/BenjaQuijada/Proyecto_algebra</a>
   </div>
 </header>
 
 <h2>1. Elección y descripción del corpus</h2>
 <p>
-  Se construyó un corpus de <strong>n = 240 reseñas públicas</strong> de usuarios de Steam en inglés, extraídas mediante <em>streaming</em> desde el repositorio abierto <code>mulhod/steam_reviews</code> en GitHub (<code>https://github.com/mulhod/steam_reviews</code>). Para garantizar que cada documento aporte suficiente contenido léxico, se filtraron reseñas de entre 300 y 3000 caracteres con al menos 200 letras alfabéticas, seleccionando <strong>60 reseñas por título</strong> en cuatro videojuegos de géneros muy contrastantes. Todo el proceso es reproducible ejecutando <code>download_data.py</code> o cargando directamente la instantánea <code>data/steam_reviews.csv</code>.
+  Se construyó un corpus de <strong>n = 240 reseñas públicas</strong> de usuarios de Steam en inglés combinando dos repositorios abiertos en GitHub: <code>mrafifrbbn/steam-reviews</code> (para <em>GTA V</em>, <em>Dead by Daylight</em> y <em>Rocket League</em>) y <code>mulhod/steam_reviews</code> (para <em>Counter-Strike</em>). Para asegurar suficiente contenido léxico y evitar duplicados por ediciones, se filtraron reseñas de entre 280 y 3000 caracteres con al menos 180 letras alfabéticas y deduplicación por prefijo, seleccionando <strong>60 reseñas por título</strong>. Todo el proceso es reproducible ejecutando <code>download_data.py</code> o cargando directamente <code>data/steam_reviews.csv</code>.
 </p>
 
 <table>
@@ -160,56 +147,56 @@
   </thead>
   <tbody>
     <tr>
-      <td><em>The Elder Scrolls V: Skyrim</em></td>
-      <td>RPG / Fantasy</td>
+      <td><em>Grand Theft Auto V (GTA V)</em></td>
+      <td>Action / Open World</td>
       <td class="num">60</td>
-      <td class="num">986.2</td>
-      <td class="num">180.2</td>
-      <td class="num">174.0</td>
+      <td class="num">698.9</td>
+      <td class="num">133.4</td>
+      <td class="num">201.5</td>
     </tr>
     <tr>
-      <td><em>Sid Meier's Civilization V</em></td>
-      <td>Strategy 4X</td>
+      <td><em>Dead by Daylight</em></td>
+      <td>Survival Horror</td>
       <td class="num">60</td>
-      <td class="num">1014.3</td>
-      <td class="num">183.2</td>
-      <td class="num">201.4</td>
+      <td class="num">761.2</td>
+      <td class="num">140.7</td>
+      <td class="num">104.5</td>
     </tr>
     <tr>
-      <td><em>Counter-Strike: Global Offensive</em></td>
+      <td><em>Rocket League</em></td>
+      <td>Sports / Arcade</td>
+      <td class="num">60</td>
+      <td class="num">572.6</td>
+      <td class="num">107.7</td>
+      <td class="num">333.0</td>
+    </tr>
+    <tr>
+      <td><em>Counter-Strike</em></td>
       <td>Tactical FPS</td>
       <td class="num">60</td>
-      <td class="num">1044.2</td>
-      <td class="num">190.8</td>
-      <td class="num">618.2</td>
-    </tr>
-    <tr>
-      <td><em>Football Manager 2015</em></td>
-      <td>Sports Sim</td>
-      <td class="num">60</td>
-      <td class="num">1109.4</td>
-      <td class="num">206.9</td>
-      <td class="num">248.0</td>
+      <td class="num">675.0</td>
+      <td class="num">119.8</td>
+      <td class="num">172.0</td>
     </tr>
   </tbody>
 </table>
 
 <h2>2. Hipótesis inicial</h2>
 <blockquote>
-  Dado que los cuatro títulos pertenecen a géneros claramente diferenciados, esperamos que la matriz término-documento presente una estructura latente dominada por cuatro grupos temáticos asociados a cada juego: vocabulario de exploración y modificaciones en Skyrim (<em>mods, dragon, quests</em>), gestión de imperios y turnos en Civilization V (<em>turn, city, war, victory</em>), disparo competitivo en CS:GO (<em>team, hacker, kill, matchmaking</em>) y dirección técnica de fútbol en Football Manager 2015 (<em>players, football, match, tactics</em>). Asimismo, anticipamos que la primera componente singular capturará un eje transversal común a las reseñas (<em>game, play, hours, fun</em>), mientras que las componentes siguientes separarán los géneros, con posible solapamiento en reseñas enfocadas en rendimiento o políticas de Steam.
+  Dado que los cuatro títulos pertenecen a géneros claramente diferenciados, esperamos que la matriz término-documento exhiba una estructura latente dominada por cuatro grupos temáticos asociados a cada juego: vocabulario de modo en línea, dinero e historia en GTA V (<em>gta, online, rockstar, story, money</em>), léxico asimétrico de persecución y terror en Dead by Daylight (<em>killer, survivor, perks, repair</em>), términos de autos y deporte en Rocket League (<em>cars, rocket, football, fly</em>) y terminología clásica de disparos en Counter-Strike (<em>counter, strike, shooter, fps, aim</em>). Asimismo, anticipamos que la primera componente singular capturará un eje transversal común a las reseñas de Steam (<em>play, fun, game, hours</em>), mientras que las componentes siguientes separarán los géneros, pudiendo aparecer cercanía entre títulos multijugador cuando se discuten trampas, baneos o plantillas de evaluación.
 </blockquote>
 
 <h2>3. Preprocesamiento y construcción de la matriz textual</h2>
 <p>
-  Para construir el vocabulario se aplicó normalización a minúsculas, tokenización alfabética de palabras de al menos 3 letras (<code>\b[a-zA-Z]{3,}\b</code>), eliminación de <em>stopwords</em> estándar en inglés y filtrado por frecuencia documental (<code>min_df=3</code>, <code>max_df=0.80</code>) para descartar erratas aisladas y términos demasiado ubicuos. En lugar de conteos crudos, se empleó ponderación <strong>TF-IDF con frecuencia sublineal</strong> (<code>1 + log(tf)</code>), evitando que reseñas muy extensas o repeticiones dominen la norma de las columnas.
+  Tras decodificar entidades HTML y normalizar espacios, se aplicó conversión a minúsculas, tokenización alfabética de palabras de al menos 3 letras (<code>\b[a-zA-Z]{3,}\b</code>), eliminación de <em>stopwords</em> en inglés y filtrado por frecuencia documental (<code>min_df=3</code>, <code>max_df=0.80</code>) para descartar erratas aisladas y términos demasiado ubicuos. Se utilizó ponderación <strong>TF-IDF con frecuencia sublineal</strong> (<code>1 + log(tf)</code>), evitando que reseñas extensas o repeticiones dominen la norma de las columnas.
 </p>
 <p>
-  El vocabulario final quedó conformado por <strong>m = 1371 términos</strong>. Transponiendo la matriz entregada por <code>TfidfVectorizer</code> de <code>scikit-learn</code>, se construyó la matriz término-documento <strong>A &isin; &#8477;<sup>1371 &times; 240</sup></strong> (filas = términos, columnas = documentos), con una densidad de entradas no nulas del <strong>3.40%</strong> (esparsidad 96.60%) y norma de Frobenius <strong>||A||<sub>F</sub> = 15.4919</strong>.
+  El vocabulario final quedó conformado por <strong>m = 850 términos</strong>. Transponiendo la matriz entregada por <code>TfidfVectorizer</code>, se construyó la matriz término-documento <strong>A &isin; &#8477;<sup>850 &times; 240</sup></strong> (filas = términos, columnas = documentos), con una densidad de entradas no nulas del <strong>3.53%</strong> (esparsidad 96.47%) y norma de Frobenius <strong>||A||<sub>F</sub> = 15.4919</strong>.
 </p>
 
 <h2>4. Cálculo de la SVD y análisis de valores singulares</h2>
 <p>
-  Se calculó la descomposición SVD reducida <strong>A = U &Sigma; V<sup>T</sup></strong> mediante <code>np.linalg.svd(A, full_matrices=False)</code>, obteniendo <strong>U &isin; &#8477;<sup>1371 &times; 240</sup></strong>, <strong>&Sigma; = diag(&sigma;<sub>1</sub>, &hellip;, &sigma;<sub>240</sub>)</strong> y <strong>V<sup>T</sup> &isin; &#8477;<sup>240 &times; 240</sup></strong>, con error de reconstrucción <strong>||A &minus; U&Sigma;V<sup>T</sup>||<sub>F</sub> = 5.25 &times; 10<sup>&minus;14</sup></strong>.
+  Se calculó la descomposición SVD reducida <strong>A = U &Sigma; V<sup>T</sup></strong> mediante <code>np.linalg.svd(A, full_matrices=False)</code>, obteniendo <strong>U &isin; &#8477;<sup>850 &times; 240</sup></strong>, <strong>&Sigma; = diag(&sigma;<sub>1</sub>, &hellip;, &sigma;<sub>240</sub>)</strong> y <strong>V<sup>T</sup> &isin; &#8477;<sup>240 &times; 240</sup></strong>, con error de reconstrucción <strong>||A &minus; U&Sigma;V<sup>T</sup>||<sub>F</sub> = 4.96 &times; 10<sup>&minus;14</sup></strong>.
 </p>
 
 <div class="figure">
@@ -218,7 +205,7 @@
 </div>
 
 <p>
-  Los primeros valores singulares son <strong>&sigma;<sub>1</sub> = 3.692</strong>, <strong>&sigma;<sub>2</sub> = 2.241</strong>, <strong>&sigma;<sub>3</sub> = 2.066</strong> y <strong>&sigma;<sub>4</sub> = 1.973</strong>, observándose un salto espectral claro hacia <strong>&sigma;<sub>5</sub> = 1.677</strong> seguido de una cola de decaimiento gradual. Este codo en <strong>k = 4</strong> refleja directamente la presencia de los cuatro géneros del corpus (reteniendo el <strong>11.17%</strong> de la energía espectral). Para tareas de exploración semántica y similitud coseno se eligió <strong>k = 20</strong> (<strong>24.98%</strong> de la energía), un compromiso adecuado para capturar matices subtemáticos sin arrastrar el ruido de alta frecuencia de la cola.
+  Los primeros valores singulares son <strong>&sigma;<sub>1</sub> = 3.756</strong>, <strong>&sigma;<sub>2</sub> = 2.094</strong>, <strong>&sigma;<sub>3</sub> = 1.931</strong>, <strong>&sigma;<sub>4</sub> = 1.783</strong> y <strong>&sigma;<sub>5</sub> = 1.642</strong>. El salto más grande está entre &sigma;<sub>1</sub> y &sigma;<sub>2</sub> (eje común del vocabulario). Luego las diferencias son de &asymp; 0.14&ndash;0.16 hasta &sigma;<sub>4</sub>, y desde &sigma;<sub>5</sub> la curva se aplana (diferencias de 0.06 y luego &asymp; 0.02&ndash;0.03). El codo no es abrupto, pero indica que las primeras <strong>4 componentes</strong> se separan de una cola plana, algo coherente con 4 juegos (1 eje común + 3 direcciones de contraste). Con <strong>k = 4</strong> se retiene solo el <strong>10.58%</strong> de la energía, algo esperable en matrices TF-IDF dispersas, por lo que se usó k = 4 para interpretar temas y <strong>k = 20</strong> (<strong>25.19%</strong> de la energía) como criterio práctico para medir similitudes sin arrastrar la cola ruidosa.
 </p>
 
 <h2>5. Representación 2D de documentos y términos</h2>
@@ -237,22 +224,22 @@
 </div>
 
 <p>
-  Como se aprecia en la Figura 2, en <code>Span(u<sub>1</sub>, u<sub>2</sub>)</code> todos los documentos tienen coordenada negativa en <em>u<sub>1</sub></em> porque la primera componente (asociada a una matriz no negativa) captura el eje promedio del lenguaje de reseñas. Al pasar a <strong><code>Span(u<sub>2</sub>, u<sub>3</sub>)</code></strong> y <strong><code>Span(v<sub>2</sub>, v<sub>3</sub>)</code></strong> (Figura 3), los géneros se separan con nitidez: <em>Football Manager 2015</em> asciende hacia <em>u<sub>3</sub> &gt; 0</em> (<em>players, goals, engine, football, manager, match</em>), <em>CS:GO</em> se ubica a la izquierda en <em>u<sub>2</sub> &lt; 0</em> (<em>noob, hacker, team, kill, rage</em>) y <em>Skyrim</em> se concentra a la derecha en <em>u<sub>2</sub> &gt; 0</em> (<em>mods, skyrim, valve, paid, bethesda</em>).
+  En la Figura 2, <code>Span(u<sub>1</sub>, u<sub>2</sub>)</code> ubica todas las reseñas con <em>u<sub>1</sub> &lt; 0</em> porque la primera componente recoge el eje promedio del lenguaje común de reseñas en una matriz no negativa. Al proyectar sobre <strong><code>Span(u<sub>2</sub>, u<sub>3</sub>)</code></strong> y <strong><code>Span(v<sub>2</sub>, v<sub>3</sub>)</code></strong> (Figura 3), los géneros se separan claramente: <em>Dead by Daylight</em> se proyecta hacia <em>u<sub>2</sub> &gt; 0, u<sub>3</sub> &lt; 0</em> (<em>killer, killers, survivors, survivor, dlc</em>), <em>Counter-Strike</em> hacia <em>u<sub>2</sub> &lt; 0, u<sub>3</sub> &lt; 0</em> (<em>counter, strike, shooter, fps, steam</em>) y <em>GTA V</em> hacia <em>u<sub>3</sub> &gt; 0</em> (<em>gta, online, rockstar, money, story</em>). <em>Rocket League</em> queda cerca del origen y se superpone en parte con los demás en este plano; se diferencia mejor en <em>u<sub>4</sub></em>. Asignando cada documento al centroide de juego más cercano se acierta en &asymp; 78% de los casos con (u<sub>2</sub>, u<sub>3</sub>) y en &asymp; 82% con (u<sub>2</sub>, u<sub>3</sub>, u<sub>4</sub>): la separación es clara, pero no perfecta. Como los signos de los vectores singulares son arbitrarios, lo que importa es la posición relativa de los grupos.
 </p>
 
 <h2>6. Exploración semántica en dimensión reducida</h2>
 <ul>
-  <li><strong>Significado temático de las componentes:</strong> La componente 2 (&sigma;<sub>2</sub> = 2.241) contrapone la discusión de <em>mods pagados</em> en Skyrim (<code>mods, skyrim, valve, paid, mod</code>) frente a la jerga competitiva de CS:GO (<code>noob, hacker, team, kill, idiot</code>). La componente 3 (&sigma;<sub>3</sub> = 2.066) aísla el léxico futbolístico de Football Manager (<code>players, goals, engine, football, manager, injuries</code>). La componente 4 (&sigma;<sub>4</sub> = 1.973) separa por completo a Civilization V (<code>civilization, turn, city, ghandi, war, gandhi, victory</code>).</li>
-  <li><strong>Términos cercanos (similitud coseno en k = 20):</strong> Al consultar <code>dragon</code> sus vecinos más próximos son <code>whiterun (0.90), arrow (0.88), knee (0.88), guard (0.87)</code>, capturando automáticamente el célebre meme de los guardias de Skyrim. Para <code>gandhi</code> aparecen <code>khan (0.87), nuclear (0.83), empire (0.81)</code>, reflejando el icónico meme de <em>Nuclear Gandhi</em> en Civilization V; y para <code>tactics</code> emergen <code>patched (0.91), players (0.86), goalkeeper (0.86), injuries (0.85)</code>.</li>
-  <li><strong>Documentos cercanos:</strong> El par más similar dentro de un mismo juego (<code>csgo_01</code> y <code>csgo_36</code>, similitud <code>1.000</code>) corresponde a un <em>copypasta</em> humorístico repetido por distintos usuarios en CS:GO. Entre juegos distintos, el par más cercano (<code>civilization_v_55</code> y <code>csgo_21</code>, similitud <code>0.872</code>) comparte un tono narrativo casual centrado en anécdotas con amigos (<em>fun, people, friend, game</em>) con bajo uso de vocabulario técnico.</li>
+  <li><strong>Significado temático de las componentes:</strong> La componente 2 (&sigma;<sub>2</sub> = 2.094) contrapone <em>Dead by Daylight</em> (<code>killers, killer, survivors, survivor, dlc</code>) frente a <em>Counter-Strike</em> (<code>counter, strike, shooter, fps, steam</code>). La componente 3 (&sigma;<sub>3</sub> = 1.931) separa a <em>GTA V</em> (<code>gta, online, rockstar, money, buy, story</code>), y la componente 4 (&sigma;<sub>4</sub> = 1.783) aísla con claridad a <em>Rocket League</em> (<code>cars, rocket, hours, league, football</code>).</li>
+  <li><strong>Términos cercanos (similitud coseno en k = 20):</strong> Para <code>survivor</code> los vecinos son <code>killer (0.95), survivors (0.88), unbalanced (0.87), pallets (0.85), repair (0.84)</code>, capturando las mecánicas asimétricas exactas de <em>Dead by Daylight</em>. Para <code>rockstar</code> emergen <code>modder (0.86), ban (0.85), support (0.83), hacker (0.75), card (0.74), shark (0.73)</code>, reflejando el debate sobre <em>GTA Online</em>. Para <code>cars</code> aparecen <code>football (0.81), fly (0.80), flying (0.76)</code> (<em>Rocket League</em>), y para <code>shooter</code> surgen <code>search (0.91), person (0.87), simplistic (0.86), modern (0.82)</code> (<em>Counter-Strike</em>).</li>
+  <li><strong>Documentos cercanos:</strong> Dentro de <em>Rocket League</em>, el par más similar (<code>rocket_league_09</code> y <code>rocket_league_19</code>, similitud <code>0.982</code>) corresponde a reseñas con formato de plantilla/<em>checklist</em> (<em>Graphics, Price/quality, Requirements</em>). Entre juegos distintos, el par más cercano (<code>gta_v_51</code> de <em>GTA V</em> y <code>counter_strike_28</code> de <em>Counter-Strike</em>, similitud <code>0.853</code>) conecta ambos títulos porque los dos usuarios denuncian haber sufrido un <strong>baneo injusto</strong> (<code>banned, reason, account, hacks</code>).</li>
 </ul>
 
 <h2>7. Discusión, limitaciones y conclusiones</h2>
 <p>
-  <strong>Contrastación con la hipótesis:</strong> La hipótesis inicial se confirma: la SVD descubre la estructura de los cuatro géneros sin supervisión, exhibe un salto espectral en <em>k = 4</em> y separa claramente documentos y términos en las componentes 2, 3 y 4. Como resultado inesperado, la señal dominante de Skyrim no correspondió a dragones o fantasía, sino a la <strong>polémica de los <em>paid mods</em></strong> de Valve y Bethesda vigente en la fecha del corpus, mostrando cómo LSA detecta eventos coyunturales reales en los datos.
+  <strong>Contrastación con la hipótesis:</strong> La hipótesis inicial se cumple en gran medida: sin usar etiquetas, la SVD recupera la estructura de los cuatro juegos, el espectro se aplana después de las primeras 4 componentes y las componentes 2, 3 y 4 separan documentos y términos por juego, aunque con superposición (sobre todo en <em>Rocket League</em> y en reseñas genéricas). Como hallazgo inesperado, en <em>GTA V</em> tiene gran peso la controversia por baneos, <em>modders</em> y <em>Shark Cards</em> en <em>GTA Online</em>, lo que explica la fuerte conexión semántica descubierta entre una reseña de <em>GTA V</em> y otra de <em>Counter-Strike</em> sobre baneos de VAC.
 </p>
 <p>
-  <strong>Límites del método y del corpus:</strong> El enfoque de bolsa de palabras con TF-IDF ignora el orden sintáctico, las negaciones y el sarcasmo, muy frecuente en reseñas de Steam; además, la linealidad de la SVD no resuelve por sí sola la polisemia cuando un término (como <em>engine</em>) aparece en contextos distintos. Por otra parte, el corpus se restringe a 240 reseñas en inglés de una ventana temporal específica y es sensible a textos repetitivos (<em>copypastas</em>). Como herramienta exploratoria, LSA resulta sumamente efectiva para descubrir patrones latentes y guiar la lectura cualitativa del corpus.
+  <strong>Límites del método y del corpus:</strong> El modelo de bolsa de palabras con TF-IDF ignora el orden sintáctico, las negaciones y el sarcasmo propio de Steam; además, la linealidad de la SVD no resuelve la polisemia cuando términos como <em>hacker</em> o <em>mod</em> se comparten entre juegos en línea distintos. Finalmente, el corpus se acota a 240 reseñas en inglés y es sensible a reseñas tipo plantilla (<em>checklists</em>), por lo que LSA debe usarse como guía exploratoria junto con la lectura directa del texto.
 </p>
 
 </body>

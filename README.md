@@ -18,8 +18,7 @@ Este repositorio contiene el código, los datos reproducibles y las visualizacio
 │   ├── docs_2d.png                # Proyección 2D de documentos en Span(u1, u2) y Span(u2, u3)
 │   └── terms_2d.png               # Proyección 2D de términos en Span(v2, v3)
 ├── report/
-│   ├── informe.html               # Versión HTML del informe académico
-│   └── informe.tex                # Fuente LaTeX (para Overleaf)
+│   └── informe.html               # Versión HTML del informe académico
 ├── download_data.py               # Script reproducible de descarga desde GitHub
 ├── lsa_steam_reviews.ipynb        # Notebook principal con los 9 pasos del análisis
 ├── Informe_Proyecto_LSA_Benjamin_Quijada.pdf  # Informe final en PDF
@@ -31,16 +30,18 @@ Este repositorio contiene el código, los datos reproducibles y las visualizacio
 
 ## Fuente de los datos
 
-El corpus se construyó a partir del repositorio público [`mulhod/steam_reviews`](https://github.com/mulhod/steam_reviews) en GitHub (archivos `.jsonlines` con reseñas reales de usuarios de Steam).
+El corpus se construyó combinando dos repositorios públicos en GitHub con reseñas reales de usuarios de Steam:
+- [`mrafifrbbn/steam-reviews`](https://github.com/mrafifrbbn/steam-reviews)
+- [`mulhod/steam_reviews`](https://github.com/mulhod/steam_reviews)
 
-Se seleccionaron **60 reseñas sustanciales en inglés** (entre 300 y 3000 caracteres) de 4 títulos pertenecientes a géneros contrastantes (**240 documentos en total**):
+Se seleccionaron **60 reseñas sustanciales en inglés** (entre 280 y 3000 caracteres) de 4 títulos pertenecientes a géneros contrastantes (**240 documentos en total**):
 
 | Videojuego | Género | Documentos | Palabras promedio |
 |---|---|---:|---:|
-| *The Elder Scrolls V: Skyrim* | RPG / Fantasy | 60 | 180.2 |
-| *Sid Meier's Civilization V* | Strategy 4X | 60 | 183.2 |
-| *Counter-Strike: Global Offensive* | Tactical FPS | 60 | 190.8 |
-| *Football Manager 2015* | Sports Sim | 60 | 206.9 |
+| *Grand Theft Auto V (GTA V)* | Action / Open World | 60 | 133.4 |
+| *Dead by Daylight* | Survival Horror | 60 | 140.7 |
+| *Rocket League* | Sports / Arcade | 60 | 107.7 |
+| *Counter-Strike* | Tactical FPS | 60 | 119.8 |
 
 ---
 
@@ -51,7 +52,7 @@ Se seleccionaron **60 reseñas sustanciales en inglés** (entre 300 y 3000 carac
    pip install -r requirements.txt
    ```
 
-2. **(Opcional) Volver a descargar el corpus** desde la fuente pública:
+2. **(Opcional) Volver a descargar el corpus** desde las fuentes públicas:
    ```bash
    python download_data.py
    ```
